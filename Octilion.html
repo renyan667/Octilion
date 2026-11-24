@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Octillion: UFC rare-answer trivia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&display=swap">
+    <style>
+        :root {
+            --sh: #dff1f2;
+            --dp: #8ec1cb;
+            --fg: #072a36;
+            --mut: #3f6571;
+            --card: #ffffffb8;
+            --line: #8fb5bd;
+            --acc: #0c4a5e;
+            --onacc: #fff;
+            --t0: #5b6b73;
+            --t1: #1f8a5a;
+            --t2: #1c70b0;
+            --t3: #7a3fb8;
+            --t4: #c4670a;
+            --t5: #c8102e;
+            color-scheme: light;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        @media (prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --sh: #0d3a4c;
+                --dp: #020b11;
+                --fg: #e8f4f6;
+                --mut: #9bbcc6;
+                --card: #ffffff14;
+                --line: #2c5666;
+                --acc: #ffb703;
+                --onacc: #06212c;
+                --t0: #9aa9b0;
+                --t1: #5fd39b;
+                --t2: #62b6f0;
+                --t3: #bb8cf5;
+                --t4: #ffa04d;
+                --t5: #ff5c75;
+                color-scheme: dark
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --sh: #0d3a4c;
+            --dp: #020b11;
+            --fg: #e8f4f6;
+            --mut: #9bbcc6;
+            --card: #ffffff14;
+            --line: #2c5666;
+            --acc: #ffb703;
+            --onacc: #06212c;
+            --t0: #9aa9b0;
+            --t1: #5fd39b;
+            --t2: #62b6f0;
+            --t3: #bb8cf5;
+            --t4: #ffa04d;
+            --t5: #ff5c75;
+            color-scheme: dark
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-padding-top: env(safe-area-inset-top, 0px)
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--fg);
+            font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: var(--sh);
+            background: color-mix(in srgb, var(--dp) calc(var(--d, 0)*100%), var(--sh));
+            transition: background .9s
+        }
+
+        main {
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 22px 16px 48px
+        }
+
+        h1,
+        h2,
+        .big {
+            font-family: "Big Shoulders Display", Impact, "Arial Narrow", sans-serif;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1
+        }
+
+        h1 {
+            font-size: clamp(72px, 24vw, 132px);
+            letter-spacing: .01em
+        }
+
+        h2 {
+            font-size: clamp(30px, 8vw, 40px);
+            line-height: 1.08;
+            margin: 6px 0 16px
+        }
+
+        .big {
+            font-size: 32px
+        }
+
+        .mut {
+            color: var(--mut)
+        }
+
+        .card {
+            background: var(--card);
+            padding: 22px 24px;
+            margin: 16px 0;
+            --k: 16px;
+            clip-path: polygon(var(--k) 0, calc(100% - var(--k)) 0, 100% var(--k), 100% calc(100% - var(--k)), calc(100% - var(--k)) 100%, var(--k) 100%, 0 calc(100% - var(--k)), 0 var(--k))
+        }
+
+        .card p {
+            margin: 0 0 12px
+        }
+
+        button {
+            font: inherit;
+            font-weight: 700;
+            border: 0;
+            border-radius: 10px;
+            padding: 14px 24px;
+            background: var(--acc);
+            color: var(--onacc);
+            cursor: pointer
+        }
+
+        button.ghost {
+            background: transparent;
+            color: var(--fg);
+            border: 2px solid var(--line)
+        }
+
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid var(--t2);
+            outline-offset: 2px
+        }
+
+        input {
+            font: inherit;
+            font-size: 18px;
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 2px solid var(--line);
+            background: transparent;
+            color: var(--fg)
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px
+        }
+
+        .bar {
+            height: 8px;
+            border-radius: 9px;
+            background: var(--line);
+            overflow: hidden
+        }
+
+        .bar i {
+            display: block;
+            height: 100%;
+            width: 100%;
+            background: var(--acc)
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px
+        }
+
+        .chip {
+            border: 1.5px solid var(--c);
+            border-radius: 99px;
+            padding: 3px 11px;
+            font-size: 14px
+        }
+
+        .chip b {
+            color: var(--c)
+        }
+
+        .chip.me {
+            background: var(--c);
+            color: #fff
+        }
+
+        .chip.me b {
+            color: #fff
+        }
+
+        .pts {
+            font-size: 84px;
+            color: var(--c)
+        }
+
+        pre {
+            font: inherit;
+            font-size: 20px;
+            margin: 0;
+            white-space: pre-wrap
+        }
+
+        small {
+            display: block;
+            margin-top: 18px;
+            color: var(--mut);
+            font-size: 13px
+        }
+
+        .qb {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            width: 100%;
+            margin-bottom: 10px;
+            text-align: left;
+            font-weight: 400;
+            padding: 14px 18px
+        }
+
+        .qb .big {
+            font-size: 28px
+        }
+
+        #toast {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            padding: 0 16px calc(24px + env(safe-area-inset-bottom, 0px));
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .2s;
+            z-index: 5
+        }
+
+        #toast.on {
+            opacity: 1
+        }
+
+        #tm {
+            background: var(--fg);
+            color: var(--sh);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            max-width: 100%
+        }
+
+        .qb {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px
+        }
+
+        .qt {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            align-items: flex-start
+        }
+
+        .bst {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            white-space: nowrap
+        }
+
+        .bst .big {
+            font-size: 26px;
+            color: var(--acc)
+        }
+
+        @keyframes rise {
+            from {
+                transform: translateY(0) scale(.6);
+                opacity: 0
+            }
+
+            10% {
+                opacity: .35
+            }
+
+            to {
+                transform: translateY(-115vh) scale(1.1);
+                opacity: 0
+            }
+        }
+
+        @keyframes drop {
+            from {
+                transform: translateY(-.7em) rotate(-8deg);
+                opacity: 0
+            }
+
+            to {
+                transform: none;
+                opacity: 1
+            }
+        }
+
+        @keyframes up {
+            from {
+                transform: translateY(14px);
+                opacity: 0
+            }
+
+            to {
+                transform: none;
+                opacity: 1
+            }
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(.9);
+                opacity: 0
+            }
+
+            60% {
+                transform: scale(1.025)
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        @keyframes shake {
+
+            20%,
+            60% {
+                transform: translateX(-7px)
+            }
+
+            40%,
+            80% {
+                transform: translateX(7px)
+            }
+        }
+
+        @keyframes pulse {
+            50% {
+                opacity: .4
+            }
+        }
+
+        @keyframes spark {
+            to {
+                transform: translate(var(--x), var(--y)) scale(.2);
+                opacity: 0
+            }
+        }
+
+        main {
+            position: relative;
+            z-index: 1
+        }
+
+        #bubbles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0
+        }
+
+        #bubbles i {
+            position: absolute;
+            bottom: -40px;
+            border-radius: 50%;
+            border: 1.5px solid var(--fg);
+            opacity: 0;
+            animation: rise linear infinite
+        }
+
+        h1 span {
+            display: inline-block;
+            animation: drop .65s cubic-bezier(.2, 1.4, .4, 1) backwards
+        }
+
+        .qb {
+            animation: up .5s backwards
+        }
+
+        .card {
+            animation: pop .45s
+        }
+
+        .chip {
+            animation: up .4s backwards
+        }
+
+        .shake {
+            animation: shake .35s
+        }
+
+        .low i {
+            background: var(--t5);
+            animation: pulse .5s infinite
+        }
+
+        .sp {
+            position: fixed;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 6;
+            animation: spark .9s ease-out forwards
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important
+            }
+
+            #bubbles {
+                display: none
+            }
+        }
+
+        #back {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 7;
+            padding: calc(10px + env(safe-area-inset-top, 0px)) 18px 10px 14px;
+            background: transparent;
+            color: var(--fg);
+            font-size: 28px;
+            line-height: 1;
+            border-radius: 0 0 16px 0
+        }
+
+        .playing #back {
+            display: block
+        }
+
+        .playing main {
+            padding-top: 56px
+        }
+
+        .ins {
+            margin: 0 0 16px;
+            padding: 10px 14px;
+            border-left: 3px solid var(--acc);
+            animation: up .5s .45s backwards
+        }
+
+        .ins b {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--mut)
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            body {
+                transition: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main id="app"></main>
+    <div id="toast" role="status" aria-live="polite"><span id="tm"></span></div>
+    <button id="back" aria-label="Leave this dive">←</button>
+    <script>
+        const PTS = [5, 20, 40, 65, 85, 100],
+            TN = ["Crowd favourite", "Common", "Uncommon", "Rare", "Deep cut", "One in an Octillion"],
+            MSG = ["Everyone says that one.", "Solid, but plenty of others got there.", "Nice thinking.", "Rare air.", "Deep cut!", "One in an Octillion!"],
+            SQ = ["⬜", "🟩", "🟦", "🟪", "🟧", "🟥"],
+            RANK = [[0, "Tap-out tourist"], [1200, "Prelim fighter"], [2200, "Contender"], [3200, "Co-main eventer"], [4200, "Champion"], [5200, "Pound-for-pound great"]],
+            Q = [
+                ["Name a former UFC heavyweight champion", [["Jon Jones", 0, "jones,bones"], ["Francis Ngannou", 0, "ngannou"], ["Stipe Miocic", 0, "miocic,stipe"], ["Brock Lesnar", 0, "lesnar,brock"], ["Cain Velasquez", 1, "velasquez,cain"], ["Daniel Cormier", 1, "cormier,dc"], ["Tom Aspinall", 1, "aspinall"], ["Junior dos Santos", 1, "dos santos,jds,cigano"], ["Randy Couture", 2, "couture"], ["Frank Mir", 2, "mir"], ["Fabricio Werdum", 2, "werdum"], ["Andrei Arlovski", 3, "arlovski"], ["Tim Sylvia", 3, "sylvia"], ["Mark Coleman", 3, "coleman"], ["Josh Barnett", 4, "barnett"], ["Ricco Rodriguez", 4, "ricco"], ["Bas Rutten", 4, "rutten"], ["Maurice Smith", 5, "mo smith"], ["Kevin Randleman", 5, "randleman"]]],
+                ["Name a country outside the USA that has hosted a UFC event", [["Canada", 0, ""], ["Brazil", 0, "brasil"], ["United Kingdom", 0, "uk,england,britain,great britain,scotland,northern ireland"], ["Australia", 0, ""], ["Japan", 1, ""], ["United Arab Emirates", 1, "uae,abu dhabi,emirates"], ["Mexico", 1, ""], ["Sweden", 2, ""], ["Germany", 2, ""], ["China", 2, ""], ["Singapore", 2, ""], ["Russia", 2, ""], ["Ireland", 2, ""], ["Poland", 3, ""], ["New Zealand", 3, "nz"], ["South Korea", 3, "korea"], ["France", 3, ""], ["Chile", 4, ""], ["Czech Republic", 4, "czechia,czech"]]],
+                ["Name a UFC lightweight champion (undisputed or interim)", [["Conor McGregor", 0, "mcgregor,conor"], ["Khabib Nurmagomedov", 0, "khabib,nurmagomedov"], ["Islam Makhachev", 0, "makhachev,islam"], ["Charles Oliveira", 1, "oliveira,do bronx"], ["Dustin Poirier", 2, "poirier"], ["Justin Gaethje", 2, "gaethje"], ["Tony Ferguson", 2, "ferguson"], ["Frankie Edgar", 2, "edgar"], ["Anthony Pettis", 3, "pettis"], ["Benson Henderson", 3, "henderson,bendo"], ["Rafael dos Anjos", 3, "dos anjos,rda"], ["Eddie Alvarez", 3, "alvarez"], ["BJ Penn", 3, "penn,b.j. penn"], ["Jens Pulver", 4, "pulver"], ["Sean Sherk", 5, "sherk"]]],
+                ["Name a Brazilian UFC fighter", [["Anderson Silva", 0, "silva,spider"], ["José Aldo", 0, "aldo"], ["Charles Oliveira", 0, "oliveira"], ["Alex Pereira", 0, "pereira,poatan"], ["Amanda Nunes", 1, "nunes"], ["Vitor Belfort", 1, "belfort"], ["Lyoto Machida", 1, "machida"], ["Maurício Rua", 2, "shogun,shogun rua,rua"], ["Wanderlei Silva", 2, "wanderlei"], ["Minotauro Nogueira", 2, "nogueira,minotauro"], ["Glover Teixeira", 2, "teixeira"], ["Junior dos Santos", 2, "dos santos,jds"], ["Renan Barão", 3, "barao"], ["Deiveson Figueiredo", 3, "figueiredo"], ["Jessica Andrade", 3, "andrade"], ["Paulo Costa", 3, "costa"], ["Edson Barboza", 3, "barboza"], ["Jacaré Souza", 3, "jacare,souza"], ["Jailton Almeida", 4, "almeida"], ["Michel Pereira", 4, "michel"], ["Renato Moicano", 4, "moicano"], ["Gilbert Burns", 2, ""], ["Thiago Santos", 2, ""], ["Rafael dos Anjos", 2, "rda"], ["Fabricio Werdum", 2, ""], ["Marlon Moraes", 3, ""], ["Thiago Alves", 3, ""], ["Demian Maia", 3, ""], ["Raphael Assunção", 3, ""], ["Gabriel Gonzaga", 4, ""], ["Rogério Nogueira", 4, "little nog"], ["Rousimar Palhares", 4, ""], ["Pedro Munhoz", 4, ""], ["Francisco Trinaldo", 4, ""], ["Johnny Walker", 4, ""], ["Viviane Araujo", 4, ""], ["Taila Santos", 4, ""], ["Amanda Ribas", 4, ""], ["Bethe Correia", 4, ""], ["Cláudia Gadelha", 4, ""], ["Ketlen Vieira", 4, ""], ["Mayra Bueno Silva", 4, ""], ["Gleison Tibau", 4, ""], ["Warlley Alves", 5, ""], ["Sérgio Moraes", 5, ""], ["Bruno Silva", 5, ""]]],
+                ["Name a UFC women’s champion", [["Ronda Rousey", 0, "rousey"], ["Amanda Nunes", 0, "nunes"], ["Valentina Shevchenko", 0, "shevchenko,valentina"], ["Zhang Weili", 1, "weili,zhang"], ["Rose Namajunas", 1, "namajunas"], ["Joanna Jędrzejczyk", 2, "jedrzejczyk,joanna"], ["Holly Holm", 2, "holm"], ["Miesha Tate", 2, "tate"], ["Cris Cyborg", 2, "cyborg,cris"], ["Julianna Peña", 2, "pena"], ["Alexa Grasso", 2, "grasso"], ["Kayla Harrison", 2, "harrison"], ["Jessica Andrade", 3, "andrade"], ["Carla Esparza", 4, "esparza"], ["Raquel Pennington", 4, "pennington"], ["Germaine de Randamie", 4, "de randamie"], ["Nicco Montaño", 5, "montano"]]],
+                ["Name a UFC fighter with a serious wrestling background", [["Khabib Nurmagomedov", 0, "khabib"], ["Daniel Cormier", 0, "cormier,dc"], ["Brock Lesnar", 0, "lesnar"], ["Kamaru Usman", 1, "usman"], ["Henry Cejudo", 1, "cejudo"], ["Colby Covington", 1, "covington"], ["Islam Makhachev", 1, "makhachev"], ["Randy Couture", 2, "couture"], ["Cain Velasquez", 2, "velasquez"], ["Jon Jones", 2, "jones"], ["Chael Sonnen", 3, "sonnen"], ["Ben Askren", 3, "askren"], ["Matt Hughes", 3, "hughes"], ["Johny Hendricks", 3, "hendricks"], ["Mark Coleman", 3, "coleman"], ["Phil Davis", 4, "davis"], ["Dan Severn", 5, "severn"], ["Mark Kerr", 5, "kerr"], ["Josh Koscheck", 3, ""], ["Rashad Evans", 3, ""], ["Tito Ortiz", 3, ""], ["Frankie Edgar", 3, ""], ["Aljamain Sterling", 3, ""], ["Merab Dvalishvili", 3, ""], ["Dan Henderson", 3, ""], ["Yoel Romero", 4, ""], ["Gregor Gillespie", 4, ""], ["Kevin Randleman", 5, "randleman"]]],
+                ["Name a fighter Conor McGregor has fought in the UFC", [["Nate Diaz", 0, "diaz"], ["Dustin Poirier", 0, "poirier"], ["Khabib Nurmagomedov", 0, "khabib,nurmagomedov"], ["José Aldo", 0, "aldo"], ["Donald Cerrone", 1, "cerrone,cowboy"], ["Eddie Alvarez", 2, "alvarez"], ["Max Holloway", 2, "holloway"], ["Chad Mendes", 2, "mendes"], ["Dennis Siver", 3, "siver"], ["Diego Brandão", 4, "brandao"], ["Marcus Brimage", 5, "brimage"]]],
+                ["Name a submission hold", [["Rear-naked choke", 0, "rnc,rear naked"], ["Armbar", 0, "arm bar,armlock"], ["Guillotine choke", 0, "guillotine"], ["Triangle choke", 0, "triangle"], ["Kimura", 1, ""], ["Heel hook", 1, ""], ["Americana", 2, ""], ["Ankle lock", 2, "achilles lock"], ["D’Arce choke", 2, "darce,d arce"], ["Anaconda choke", 2, "anaconda"], ["Omoplata", 3, ""], ["Kneebar", 3, "knee bar"], ["Arm-triangle choke", 3, "arm triangle,head and arm choke"], ["North-south choke", 4, "north south"], ["Ezekiel choke", 4, "ezekiel"], ["Gogoplata", 4, ""], ["Peruvian necktie", 4, ""], ["Von Flue choke", 5, "von flue"], ["Calf slicer", 5, ""], ["Banana split", 5, ""]]],
+                ["Name a former UFC middleweight champion", [["Israel Adesanya", 0, "adesanya,izzy,stylebender"], ["Anderson Silva", 0, "silva,spider"], ["Alex Pereira", 0, "pereira,poatan"], ["Sean Strickland", 1, "strickland"], ["Robert Whittaker", 1, "whittaker"], ["Chris Weidman", 1, "weidman"], ["Dricus du Plessis", 1, "du plessis,dricus"], ["Khamzat Chimaev", 1, "chimaev"], ["Michael Bisping", 2, "bisping"], ["Luke Rockhold", 2, "rockhold"], ["Rich Franklin", 2, "franklin"], ["Evan Tanner", 4, "tanner"], ["Murilo Bustamante", 4, "bustamante"], ["Dave Menne", 5, "menne"]]]
+            ];
+        const $ = s => document.querySelector(s), app = $("#app"),
+            esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])),
+            norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, ""),
+            fmt = n => n.toLocaleString("en-AU"), NO = ["iceland"];
+        function lev(a, b) { const m = [...Array(a.length + 1)].map((_, i) => [i]); for (let j = 1; j <= b.length; j++)m[0][j] = j; for (let i = 1; i <= a.length; i++)for (let j = 1; j <= b.length; j++)m[i][j] = Math.min(m[i - 1][j] + 1, m[i][j - 1] + 1, m[i - 1][j - 1] + (a[i - 1] == b[j - 1] ? 0 : 1)); return m[a.length][b.length] }
+        function match(list, raw) {
+            const x = norm(raw); if (!x || NO.includes(x)) return null; let best = null, bd = 9;
+            for (const e of list) for (const n of [e[0], ...e[2].split(",")].map(norm).filter(Boolean)) {
+                const d = x === n ? 0 : n.length >= 6 ? lev(x, n) : 9, lim = n.length >= 10 ? 2 : 1;
+                if (d <= lim && d < bd) { bd = d; best = e }
+            }
+            return best
+        }
+        let R, i, score, log, tm, t0, best = 0;
+        try { best = +localStorage.getItem("octillion-best") || 0 } catch (e) { }
+        function depth() { document.documentElement.style.setProperty("--d", Math.min(1, score / 500)) }
+        function home() {
+            score = 0; depth();
+            app.innerHTML = `<h1>Octillion</h1>
+ <p class="big mut" style="margin-top:10px">UFC trivia where the obvious answer is worth almost nothing.</p>
+ <div class="card"><p>You get seven prompts and 25 seconds for each. Every prompt has lots of right answers, but the ones everybody says barely score. Name the deep cut and you earn up to 100 points.</p>
+ <div class="chips">${TN.map((t, k) => `<span class="chip" style="--c:var(--t${k})"><b>${PTS[k]}</b> ${t}</span>`).join("")}</div>
+ <p class="mut" style="margin:12px 0 0">Every point is 10 metres of depth, and the water gets darker as you sink. A perfect dive is 7,000 m.${best ? ` Your best is ${fmt(best)} m.` : ""}</p></div>
+ <button id="go">Start the dive</button>
+ <small>A fan-made game, not affiliated with the UFC or Krillion. Rarity comes from a built-in answer bank rather than live player data, so answers outside the bank score 0.</small>`;
+            $("#go").onclick = go
+        }
+        function go() { R = [...Q].sort(() => Math.random() - .5).slice(0, 7); i = 0; score = 0; log = []; ask() }
+        function head() { return `<div class="top"><span class="mut">Prompt ${i + 1} of 7</span><span class="big">${fmt(score * 10)} m</span></div>` }
+        function ask() {
+            app.innerHTML = `${head()}<div class="bar"><i id="tb"></i></div><div class="card"><div class="mut"><span id="tl">25</span> seconds left</div><h2>${R[i][0]}</h2>
+ <input id="in" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Type one answer" aria-label="Your answer"><div class="row"><button id="lk">Lock it in</button></div></div>`;
+            const inp = $("#in"); inp.focus(); $("#lk").onclick = lock; inp.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); if (!e.repeat) lock() } };
+            t0 = Date.now(); clearInterval(tm);
+            tm = setInterval(() => { const l = 25 - (Date.now() - t0) / 1000; $("#tb").style.width = Math.max(0, l * 4) + "%"; $("#tl").textContent = Math.max(0, Math.ceil(l)); if (l <= 0) lock() }, 100)
+        }
+        function lock() {
+            clearInterval(tm); const q = R[i], raw = $("#in").value.trim(), m = match(q[1], raw), p = m ? PTS[m[1]] : 0;
+            score += p; log.push(m ? m[1] : -1); depth(); reveal(q, raw, m, p)
+        }
+        function reveal(q, raw, m, p) {
+            const chips = [...q[1]].sort((a, b) => b[1] - a[1]).map(e => `<span class="chip${e === m ? " me" : ""}" style="--c:var(--t${e[1]})"><b>${PTS[e[1]]}</b> ${e[0]}</span>`).join("");
+            app.innerHTML = `${head()}<div class="card" style="--c:${m ? `var(--t${m[1]})` : "var(--mut)"}"><div class="mut">${q[0]}</div><div class="big pts">+${p}</div>
+ <p><b>${m ? `${m[0]}: ${TN[m[1]]}` : raw ? `“${esc(raw)}” isn’t in our answer bank` : "Time ran out"}</b><br>${m ? MSG[m[1]] : "No points this time."}</p></div>
+ <p class="mut">Every answer we rate for this prompt</p><div class="chips">${chips}</div>
+ <div class="row"><button id="nx">${i < 6 ? "Next prompt" : "See my dive"}</button></div>`;
+            $("#nx").onclick = () => { i++; i < 7 ? ask() : fin() }; setTimeout(() => { const b = $("#nx"); b && b.focus() }, 400)
+        }
+        function fin() {
+            const d = score * 10, rk = [...RANK].reverse().find(r => d >= r[0])[1], nb = d > best;
+            if (nb) { best = d; try { localStorage.setItem("octillion-best", d) } catch (e) { } }
+            const sh = `Octillion 🥊 ${fmt(d)} m deep: ${rk}\n${log.map(x => x < 0 ? "⬛" : SQ[x]).join("")}`;
+            app.innerHTML = `<h1>${fmt(d)} m</h1><p class="big" style="margin-top:8px">${rk}</p>
+ <p class="mut">${nb ? "New personal best." : `Your best is ${fmt(best)} m.`} A perfect dive is 7,000 m.</p>
+ <div class="card"><pre>${sh}</pre></div>
+ <div class="row"><button id="cp">Copy result</button><button class="ghost" id="ag">Dive again</button></div>`;
+            $("#ag").onclick = go;
+            $("#cp").onclick = async () => { try { await navigator.clipboard.writeText(sh); $("#cp").textContent = "Copied" } catch (e) { $("#cp").textContent = "Select the text above to copy it" } }
+        }
+        const STOP = ["dos", "van", "von", "del", "das", "the"];
+        const N = [
+            ["Name a UFC welterweight champion", 1, "Georges St-Pierre0=gsp,pierre|Kamaru Usman0|Leon Edwards1|Belal Muhammad1|Tyron Woodley2|Robbie Lawler2|Matt Hughes2|Colby Covington2|Johny Hendricks3|Carlos Condit3|Matt Serra4|Pat Miletich4|Carlos Newton5"],
+            ["Name a UFC light heavyweight champion", 1, "Jon Jones0|Daniel Cormier0|Chuck Liddell0|Alex Pereira1|Jan Blachowicz1|Jiri Prochazka1|Glover Teixeira1|Magomed Ankalaev1|Rashad Evans2|Quinton Jackson2=rampage|Lyoto Machida2|Maurício Rua2=shogun|Tito Ortiz2|Randy Couture3|Jamahal Hill3|Frank Shamrock4"],
+            ["Name a UFC featherweight champion", 1, "Alexander Volkanovski0=volk|Ilia Topuria0|Max Holloway0|Conor McGregor1|José Aldo1|Amanda Nunes2|Yair Rodriguez3|Cris Cyborg3|Germaine de Randamie4"],
+            ["Name a UFC flyweight champion", 1, "Demetrious Johnson0=mighty mouse,dj|Henry Cejudo0|Deiveson Figueiredo1|Brandon Moreno1|Alexandre Pantoja1|Valentina Shevchenko1|Alexa Grasso2|Nicco Montaño4"],
+            ["Name a UFC bantamweight champion", 1, "Ronda Rousey0|Amanda Nunes0|Aljamain Sterling1|Petr Yan1|Sean O’Malley1|Merab Dvalishvili1|TJ Dillashaw1=tj|Cody Garbrandt1|Dominick Cruz1|Henry Cejudo1|Renan Barão2|Miesha Tate3|Holly Holm3|Julianna Peña3|Kayla Harrison3|Raquel Pennington4"],
+            ["Name a winner of The Ultimate Fighter", 1, "Forrest Griffin0|Rashad Evans1|Michael Bisping1|Nate Diaz1|Tony Ferguson1|Diego Sanchez2|Matt Serra2|Ryan Bader2|Julianna Peña2|Kelvin Gastelum2|Carla Esparza3|Michael Chiesa3|Roy Nelson3|Court McGee4|Joe Stevenson4|Kendall Grove5|Travis Lutter5"],
+            ["Name a UFC fighter from Russia or the former Soviet Union", 1, "Khabib Nurmagomedov0|Islam Makhachev0|Petr Yan1|Alexander Volkov1|Magomed Ankalaev1|Merab Dvalishvili1|Valentina Shevchenko2|Sergei Pavlovich2|Shavkat Rakhmonov2|Andrei Arlovski3|Movsar Evloev3|Umar Nurmagomedov3|Zubaira Tukhugov4"],
+            ["Name a UFC fighter from the UK or Ireland", 1, "Conor McGregor0|Michael Bisping0|Leon Edwards1|Tom Aspinall1|Paddy Pimblett1|Darren Till2|Ian Garry2|Dan Hardy2|Paul Craig3|Molly McCann3|Brad Pickett4|Jimi Manuwa4|Joanne Wood4|Terry Etim5"],
+            ["Name a UFC fighter from Australia or New Zealand", 1, "Israel Adesanya0|Alexander Volkanovski0|Robert Whittaker0|Mark Hunt1|Tai Tuivasa1|Jack Della Maddalena1|Dan Hooker2|Kai Kara-France3=kara,france|Jimmy Crute3|Steve Erceg3|Tyson Pedro4|Casey O’Neill4|Justin Tafa4"],
+            ["Name a Canadian UFC fighter", 1, "Georges St-Pierre0=gsp,pierre|Rory MacDonald1|Patrick Côté2=cote|Mark Hominick3|Sam Stout3|TJ Grant3=tj|Carlos Newton4|Jason MacDonald4|Elias Theodorou4|Olivier Aubin-Mercier4=aubin|Randa Markos4"],
+            ["Name a Mexican or Mexican-American UFC fighter", 1, "Cain Velasquez0|Brandon Moreno0|Yair Rodriguez0|Alexa Grasso1|Henry Cejudo1|Diego Sanchez2|Gilbert Melendez2|Raul Rosas Jr.3=rosas|Irene Aldana3|Daniel Zellhuber4|Erik Perez4|Efrain Escudero4"],
+            ["Name a fighter Jon Jones has fought in the UFC", 1, "Daniel Cormier0|Alexander Gustafsson0|Stipe Miocic0|Ciryl Gane0|Rashad Evans1|Lyoto Machida1|Vitor Belfort1|Glover Teixeira1|Dominick Reyes1|Thiago Santos2|Anthony Smith2|Maurício Rua2=shogun|Quinton Jackson2=rampage|Ryan Bader3|Chael Sonnen3|Brandon Vera3|Matt Hamill3|Ovince Saint Preux4=osp|Vladimir Matyushenko4"],
+            ["Name a fighter Anderson Silva has fought in the UFC", 1, "Chael Sonnen0|Chris Weidman0|Vitor Belfort0|Forrest Griffin1|Rich Franklin1|Dan Henderson1|Stephan Bonnar2|Nate Marquardt2|Yushin Okami2|Thales Leites2|Michael Bisping3|Nick Diaz3|Demian Maia3|Chris Leben3|Patrick Côté3=cote|Travis Lutter4"],
+            ["Name a fighter Georges St-Pierre has fought in the UFC", 1, "Matt Hughes0|BJ Penn0=bj|Jake Shields1|Nick Diaz1|Josh Koscheck1|Carlos Condit1|Johny Hendricks1|Michael Bisping1|Matt Serra1|Dan Hardy2|Thiago Alves2|Jon Fitch2|Frank Trigg3|Karo Parisyan3"],
+            ["Name a fighter Khabib Nurmagomedov has fought in the UFC", 1, "Conor McGregor0|Dustin Poirier0|Justin Gaethje0|Rafael dos Anjos1|Al Iaquinta1|Edson Barboza1|Michael Johnson2|Abel Trujillo3|Gleison Tibau3|Pat Healy3"],
+            ["Name a fighter Israel Adesanya has fought in the UFC", 1, "Robert Whittaker0|Alex Pereira0|Sean Strickland0|Marvin Vettori1|Paulo Costa1|Kelvin Gastelum1|Jared Cannonier1|Anderson Silva1|Dricus du Plessis1|Derek Brunson2|Yoel Romero2|Jan Blachowicz2|Brad Tavares3"],
+            ["Name a fighter Nate Diaz has fought in the UFC", 1, "Conor McGregor0|Jorge Masvidal0|Anthony Pettis1|Leon Edwards1|Tony Ferguson1|Rafael dos Anjos2|Benson Henderson2|Takanori Gomi3"],
+            ["Name an arena that has hosted a UFC event", 0, "T-Mobile Arena0=t mobile,tmobile|Madison Square Garden0=msg|UFC Apex0=apex,the apex|MGM Grand Garden Arena1=mgm grand,mgm|Crypto.com Arena2=staples center,staples,crypto arena|The O2 Arena2=o2,o2 arena,the o2|Rogers Place3=rogers|Scotiabank Arena3=air canada centre,scotiabank|Barclays Center3=barclays|Etihad Arena3=yas island,etihad|Rogers Centre4=rogers centre"],
+            ["Name a UFC commentator, referee or executive", 1, "Dana White0|Joe Rogan0|Bruce Buffer0|Daniel Cormier1|Jon Anik1|Michael Bisping1|Dan Hardy2|Paul Felder2|Mike Goldberg2|Dominick Cruz2|Herb Dean2|John McCarthy3|Kenny Florian3|Brendan Fitzgerald3|Lorenzo Fertitta3|Marc Goddard4"],
+            ["Name a UFC Hall of Famer", 1, "Royce Gracie0|Chuck Liddell0|Georges St-Pierre0=gsp,pierre|Ken Shamrock1|Randy Couture1|Anderson Silva1|Ronda Rousey1|BJ Penn2=bj|Matt Hughes2|Tito Ortiz2|Forrest Griffin2|Stephan Bonnar3|Mark Coleman3|Dan Severn3"],
+            ["Name a UFC fighter famous for knockouts or striking", 1, "Anderson Silva0|Conor McGregor0|Israel Adesanya0|Francis Ngannou0|Alex Pereira0|Chuck Liddell1|Max Holloway1|Sean O’Malley1|Justin Gaethje1|Jorge Masvidal1|Junior dos Santos1|Derrick Lewis1|Joanna Jędrzejczyk2|Jiri Prochazka2|Mark Hunt2|Mirko Cro Cop2|Robbie Lawler2|Edson Barboza2|Anthony Johnson2|Tai Tuivasa3"],
+            ["Name a UFC heavyweight (champion or not)", 1, "Derrick Lewis0|Ciryl Gane0|Francis Ngannou0|Alexander Volkov1|Curtis Blaydes1|Sergei Pavlovich1|Tom Aspinall1|Stipe Miocic1|Jairzinho Rozenstruik2|Tai Tuivasa2|Alistair Overeem2|Mark Hunt2|Marcin Tybura3|Walt Harris3|Chris Daukaus3|Shamil Abdurakhimov4|Jailton Almeida4"],
+            ["Name a UFC fighter who competed at the Olympics", 1, "Daniel Cormier0|Henry Cejudo0|Ronda Rousey0|Kayla Harrison1|Ben Askren2|Dan Henderson2|Yoel Romero2|Matt Lindland3|Kevin Jackson4"]
+        ];
+        const POOL = Q.map((x, k) => ({ q: x[0], l: x[1], p: k != 1 && k != 7 }));
+        N.forEach(([q, p, s]) => POOL.push({ q, p, l: s.split("|").map(t => { const [a, b] = t.split("="); return [a.slice(0, -1), +a.slice(-1), b || ""] }) }));
+        const QZ = [
+            ["Champions’ circle", "Seven belts, seven divisions.", [0, 2, 8, 9, 10, 11, 4]],
+            ["Around the world", "Fighters and countries from every corner.", [1, 3, 15, 16, 17, 18, 19]],
+            ["Rivalries", "Who has fought whom.", [6, 20, 21, 22, 23, 24, 25]],
+            ["Mat work", "Wrestlers, grapplers and submission artists.", [5, 31, 7, 14, 12, 13, 9]],
+            ["Knockout artists", "Heavy hands and heavyweights.", [29, 30, 24, 20, 10, 16, 15]],
+            ["Octagon insiders", "Arenas, announcers and the Hall of Fame.", [26, 27, 28, 14, 1, 25, 31]],
+            ["Heavy hitters", "Power from every angle.", [0, 30, 29, 8, 19, 17, 18]],
+            ["Lighter weights", "Fast hands in the smaller divisions.", [12, 13, 11, 4, 2, 17, 19]],
+            ["Legends", "Stars of every era.", [28, 21, 22, 9, 8, 27, 23]],
+            ["The gauntlet", "A mixed bag, no two dives alike.", [3, 7, 2, 6, 18, 14, 26]]
+        ];
+        let B = {}, cur = 0, tt;
+        try { B = JSON.parse(localStorage.getItem("octillion-b") || "{}") } catch (e) { }
+        function toast(s) { $("#tm").textContent = s; $("#toast").classList.add("on"); clearTimeout(tt); tt = setTimeout(() => $("#toast").classList.remove("on"), 2600) }
+        function match(list, raw, p) {
+            const x = norm(raw); if (!x || NO.includes(x)) return null; let best = null, bd = 9;
+            for (const e of list) {
+                const nm = [e[0], ...e[2].split(","), ...(p ? e[0].split(" ").filter(w => w.length > 2 && !STOP.includes(w.toLowerCase())) : [])].map(norm).filter(Boolean);
+                for (const n of nm) { const d = x === n ? 0 : n.length >= 6 ? lev(x, n) : 9; if (d <= (n.length >= 10 ? 2 : 1) && d < bd) { bd = d; best = e } }
+            }
+            return best
+        }
+        function home() {
+            score = 0; depth();
+            app.innerHTML = `<h1>Octillion</h1>
+ <p class="big mut" style="margin-top:10px">UFC trivia where the obvious answer is worth almost nothing.</p>
+ <div class="card"><p>Each dive has seven prompts and 25 seconds for each. Every prompt has lots of right answers, but the ones everybody says barely score. First names or last names both count, and if an answer isn’t on our list you get another try.</p>
+ <div class="chips">${TN.map((t, k) => `<span class="chip" style="--c:var(--t${k})"><b>${PTS[k]}</b> ${t}</span>`).join("")}</div>
+ <p class="mut" style="margin:12px 0 0">Every point is 10 metres of depth, and the water gets darker as you sink. A perfect dive is 7,000 m.</p></div>
+ <h2 style="margin:26px 0 12px">Pick a dive</h2>
+ ${QZ.map((z, k) => `<button class="ghost qb" data-k="${k}"><span class="big">${z[0]}</span><span class="mut">${z[1]}${B[k] ? ` Best: ${fmt(B[k])} m` : ""}</span></button>`).join("")}
+ <small>A fan-made game, not affiliated with the UFC or Krillion. Rarity comes from a built-in answer bank rather than live player data, so answers outside the bank score 0.</small>`;
+            app.querySelectorAll(".qb").forEach(b => b.onclick = () => go(+b.dataset.k))
+        }
+        function go(k) { cur = k; R = QZ[k][2].map(n => POOL[n]).sort(() => Math.random() - .5); i = 0; score = 0; log = []; ask() }
+        function ask() {
+            const q = R[i];
+            app.innerHTML = `${head()}<div class="bar"><i id="tb"></i></div><div class="card"><div class="mut"><span id="tl">25</span> seconds left</div><h2>${q.q}</h2>
+ <input id="in" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Type one answer" aria-label="Your answer"><div class="row"><button id="lk">Lock it in</button><button class="ghost" id="sk">Skip</button></div></div>`;
+            const inp = $("#in"); inp.focus(); $("#lk").onclick = () => lock(); $("#sk").onclick = () => lock("skip");
+            inp.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); if (!e.repeat) lock() } };
+            t0 = Date.now(); clearInterval(tm);
+            tm = setInterval(() => { const l = 25 - (Date.now() - t0) / 1000; $("#tb").style.width = Math.max(0, l * 4) + "%"; $("#tl").textContent = Math.max(0, Math.ceil(l)); if (l <= 0) lock("time") }, 100)
+        }
+        function lock(mode) {
+            const q = R[i], inp = $("#in"), raw = inp.value.trim(), m = mode === "skip" ? null : match(q.l, raw, q.p);
+            if (!m && !mode) { toast(raw ? `“${raw}” isn’t on our list. Try another answer.` : "Type an answer first."); inp.focus(); inp.select(); return }
+            clearInterval(tm); const p = m ? PTS[m[1]] : 0; score += p; log.push(m ? m[1] : -1); depth(); reveal(q, raw, m, p, mode)
+        }
+        function reveal(q, raw, m, p, mode) {
+            const chips = [...q.l].sort((a, b) => b[1] - a[1]).map(e => `<span class="chip${e === m ? " me" : ""}" style="--c:var(--t${e[1]})"><b>${PTS[e[1]]}</b> ${e[0]}</span>`).join("");
+            app.innerHTML = `${head()}<div class="card" style="--c:${m ? `var(--t${m[1]})` : "var(--mut)"}"><div class="mut">${q.q}</div><div class="big pts">+${p}</div>
+ <p><b>${m ? `${m[0]}: ${TN[m[1]]}` : mode === "skip" ? "You skipped this one" : "Time ran out"}</b><br>${m ? MSG[m[1]] : "No points this time."}</p></div>
+ <p class="mut">Every answer we rate for this prompt</p><div class="chips">${chips}</div>
+ <div class="row"><button id="nx">${i < 6 ? "Next prompt" : "See my dive"}</button></div>`;
+            $("#nx").onclick = () => { i++; i < 7 ? ask() : fin() }; setTimeout(() => { const b = $("#nx"); b && b.focus() }, 400)
+        }
+        function fin() {
+            const d = score * 10, rk = [...RANK].reverse().find(r => d >= r[0])[1], nb = d > (B[cur] || 0);
+            if (nb) { B[cur] = d; try { localStorage.setItem("octillion-b", JSON.stringify(B)) } catch (e) { } }
+            const sh = `Octillion 🥊 ${QZ[cur][0]}: ${fmt(d)} m deep, ${rk}\n${log.map(x => x < 0 ? "⬛" : SQ[x]).join("")}`;
+            app.innerHTML = `<h1>${fmt(d)} m</h1><p class="big" style="margin-top:8px">${rk}</p>
+ <p class="mut">${nb ? "New personal best." : `Your best on this dive is ${fmt(B[cur])} m.`} A perfect dive is 7,000 m.</p>
+ <div class="card"><pre>${sh}</pre></div>
+ <div class="row"><button id="cp">Copy result</button><button class="ghost" id="ag">Dive again</button><button class="ghost" id="hm">All dives</button></div>`;
+            $("#ag").onclick = () => go(cur); $("#hm").onclick = home;
+            $("#cp").onclick = async () => { try { await navigator.clipboard.writeText(sh); $("#cp").textContent = "Copied" } catch (e) { $("#cp").textContent = "Select the text above to copy it" } }
+        }
+        const parse = s => s.split("|").map(t => { const [a, b] = t.split("="); return [a.slice(0, -1), +a.slice(-1), b || ""] });
+        const add = (q, p, s) => POOL.push({ q, p, l: parse(s) });
+        add("Name a US state that has hosted a UFC event", 0, "Nevada0=las vegas|New York0|California0|Florida1|Texas1|Illinois2|Georgia2|Louisiana2|Colorado2|Massachusetts3|Michigan3|New Jersey3|Pennsylvania3|Ohio3");
+        add("Name a fighter Dustin Poirier has fought in the UFC", 1, "Conor McGregor0|Khabib Nurmagomedov0|Max Holloway0|Justin Gaethje0|Charles Oliveira1|Michael Chandler1|Dan Hooker2|Eddie Alvarez2|Chan Sung Jung3=korean zombie,zombie");
+        add("Name a fighter Ronda Rousey has fought in the UFC", 1, "Holly Holm0|Amanda Nunes0|Miesha Tate0|Alexis Davis2|Sara McMann2|Cat Zingano2|Bethe Correia3|Liz Carmouche3");
+        add("Name a fighter Alexander Volkanovski has fought in the UFC", 1, "Max Holloway0|José Aldo1|Brian Ortega1|Chan Sung Jung1=korean zombie,zombie|Ilia Topuria1|Islam Makhachev1|Chad Mendes2|Yair Rodriguez2|Jeremy Kennedy4");
+        add("Name a fighter Chuck Liddell has fought in the UFC", 1, "Randy Couture0|Tito Ortiz0|Quinton Jackson1=rampage|Wanderlei Silva1|Rashad Evans1|Keith Jardine2|Renato Sobral2|Jeremy Horn2|Vitor Belfort2|Kevin Randleman3|Maurício Rua3=shogun");
+        add("Name a UFC fighter by their nickname", 0, "The Notorious (Conor McGregor)0=notorious|Bones (Jon Jones)0=bones|The Last Stylebender (Israel Adesanya)0=stylebender,last stylebender|Poatan (Alex Pereira)0=poatan|The Spider (Anderson Silva)1=spider|The Iceman (Chuck Liddell)1=iceman,ice man|The Eagle (Khabib Nurmagomedov)1=eagle|The Diamond (Dustin Poirier)1=diamond|Blessed (Max Holloway)1=blessed|Do Bronx (Charles Oliveira)2=do bronx,bronx|Borz (Khamzat Chimaev)2=borz|Thug Rose (Rose Namajunas)2=thug rose,thug|The Predator (Francis Ngannou)2=predator|Rampage (Quinton Jackson)2=rampage|Rush (Georges St-Pierre)2=rush|Gamebred (Jorge Masvidal)2=gamebred|Suga (Sean O’Malley)2=suga,sugar|Cowboy (Donald Cerrone)3=cowboy|The Korean Zombie (Chan Sung Jung)3=korean zombie,zombie|Mighty Mouse (Demetrious Johnson)3=mighty mouse|Funk Master (Aljamain Sterling)3=funk master|Cigano (Junior dos Santos)3=cigano|Shogun (Maurício Rua)3=shogun|The Black Beast (Derrick Lewis)3=black beast|Lionheart (Anthony Smith)4=lionheart|The Prodigy (BJ Penn)4=prodigy");
+        add("Name an American UFC fighter", 1, "Jon Jones0|Daniel Cormier0|Brock Lesnar0|Dustin Poirier0|Justin Gaethje0|Jorge Masvidal0|Nate Diaz0|Chuck Liddell0|Ronda Rousey0|Nick Diaz1|Kamaru Usman1|Colby Covington1|Randy Couture1|Tito Ortiz1|Forrest Griffin1|Matt Hughes1|Rashad Evans1|Holly Holm1|Miesha Tate1|Sean Strickland1|Sean O’Malley1|Tony Ferguson1|Henry Cejudo1|Michael Chandler1|Derrick Lewis1|Stipe Miocic1|Frankie Edgar1|Chris Weidman1|Luke Rockhold1|Tyron Woodley1|Robbie Lawler1|Josh Emmett2|Jim Miller2|Joe Lauzon2|Kayla Harrison2|Julianna Peña2|Rose Namajunas2|Paige VanZant2|Bryce Mitchell2|Cory Sandhagen2|Chael Sonnen2|Brian Ortega2|Tecia Torres3|Jon Fitch3|Kevin Lee3|Sage Northcutt3|Cat Zingano3|Gregor Gillespie3|Cub Swanson3");
+        const X = {
+            0: "Ciryl Gane2|Shane Carwin4",
+            3: "Antonio Carlos Junior4|Wilson Reis4|Marcos Rogerio de Lima5|Carlos Diego Ferreira5|Rodolfo Vieira5|Cezar Ferreira5|Elizeu Zaleski dos Santos5",
+            7: "Twister4|Toe hold4=toehold|Wrist lock4=wristlock|Neck crank4|Bulldog choke4|Inverted triangle5|Suloev stretch5",
+            14: "Efrain Escudero4|Amir Sadollah4|Mac Danzig4|Ross Pearson4",
+            15: "Nikita Krylov3|Zabit Magomedsharipov4|Rustam Khabilov4|Giga Chikadze4|Roman Dolidze4|Sergey Spivak4|Aleksei Oleinik5=oleynik",
+            16: "Arnold Allen3|Lerone Murphy3|Marc Diakiese4|Nathaniel Wood4|Davey Grant4|Norman Parke5|Aisling Daly5",
+            17: "Brad Riddell3|Jake Matthews4|Jamie Mullarkey4|Shane Young4|Elise Reed5",
+            18: "Charles Jourdain4|Chad Laprise4|Nordine Taleb4|Brad Katona4|Kajan Johnson5",
+            19: "Tecia Torres3|Gabriel Benitez4|Loopy Godinez4",
+            26: "Toyota Center3|Bell Centre3|Marvel Stadium2=etihad stadium,docklands|RAC Arena3|Saitama Super Arena3=saitama|Maracanãzinho4=maracanazinho",
+            27: "Megan Olivi2|Laura Sanko3|Michael Chiesa3|Frank Fertitta3|Sean Wheelock3|Marc Ratner4|Mike Beltran4|Sean Shelby4|Hunter Campbell4",
+            29: "Stephen Thompson2=wonderboy|Wanderlei Silva2=wanderlei|Marlon Vera2=chito|Valentina Shevchenko2|Dan Hooker3|Yair Rodriguez3|Holly Holm3|Jan Blachowicz3",
+            30: "Cain Velasquez1|Brock Lesnar1|Junior dos Santos1|Fabricio Werdum2|Frank Mir2|Andrei Arlovski2|Daniel Cormier2|Roy Nelson3|Shane Carwin3|Travis Browne3|Matt Mitrione3|Ben Rothwell3|Stefan Struve3|Antonio Silva3=bigfoot|Josh Barnett3|Greg Hardy4|Justin Willis4",
+            31: "Sara McMann3"
+        };
+        for (const k in X) POOL[k].l.push(...parse(X[k]));
+        QZ.push(["Stars and stripes", "Americans, states and the arenas they fought in.", [38, 32, 26, 5, 31, 14, 28]],
+            ["Women’s division", "Every belt, every rivalry.", [4, 13, 12, 34, 31, 14, 11]],
+            ["Old school", "The pioneers and their fights.", [36, 28, 5, 27, 7, 0, 9]],
+            ["Nickname game", "Who goes by what?", [37, 29, 0, 2, 8, 10, 11]],
+            ["Peak form", "Who beat whom, and who didn’t.", [33, 35, 36, 34, 22, 21, 20]]);
+        const RM = matchMedia("(prefers-reduced-motion:reduce)").matches,
+            today = () => new Date().toLocaleDateString("en-CA"),
+            shuf = (a, r) => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1));[a[i], a[j]] = [a[j], a[i]] } return a },
+            seeded = s => { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return () => { h += 0x6D2B79F5; let t = Math.imul(h ^ h >>> 15, 1 | h); t ^= t + Math.imul(t ^ t >>> 7, 61 | t); return ((t ^ t >>> 14) >>> 0) / 4294967296 } };
+        let D = {}; try { D = JSON.parse(localStorage.getItem("octillion-d") || "{}") } catch (e) { }
+        function dailySet() { const r = seeded("octillion" + today()), used = []; return shuf(QZ.map((_, k) => k), r).slice(0, 7).map(k => { const n = shuf(QZ[k][2], r).find(n => !used.includes(n)); used.push(n); return POOL[n] }) }
+        function countUp(el, a, b, ms, suf, pre) { if (!el) return; const w = v => el.textContent = (pre || "") + fmt(v) + (suf || ""); if (RM || a === b) return w(b); const t = performance.now(); (function f(n) { const k = Math.min(1, (n - t) / ms); w(Math.round(a + (b - a) * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(f) })(t) }
+        function burst(el, c, n) { if (RM || !el) return; const r = el.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2; for (let k = 0; k < n; k++) { const e = document.createElement("i"), a = Math.random() * 6.283, d = 50 + Math.random() * 100; e.className = "sp"; e.style.cssText = `left:${x}px;top:${y}px;background:${c};--x:${Math.cos(a) * d}px;--y:${Math.sin(a) * d - 30}px`; document.body.append(e); setTimeout(() => e.remove(), 1000) } }
+        if (!RM) { const b = document.createElement("div"); b.id = "bubbles"; for (let k = 0; k < 16; k++) { const s = 6 + Math.random() * 20, e = document.createElement("i"); e.style.cssText = `left:${Math.random() * 100}%;width:${s}px;height:${s}px;animation-duration:${9 + Math.random() * 12}s;animation-delay:-${Math.random() * 20}s`; b.append(e) } document.body.prepend(b) }
+        function head() { return `<div class="top"><span class="mut">${cur === "d" ? "Daily dive" : QZ[cur][0]}, prompt ${i + 1} of 7</span><span class="big" id="dm">${fmt(score * 10)} m</span></div>` }
+        function home() {
+            score = 0; depth(); const dn = D.d === today();
+            app.innerHTML = `<h1 aria-label="Octillion">${[..."Octillion"].map((c, j) => `<span style="animation-delay:${j * 70}ms">${c}</span>`).join("")}</h1>
+ <p class="big mut" style="margin-top:10px">UFC trivia where the obvious answer is worth almost nothing.</p>
+ <div class="card"><p>Each dive has seven prompts and 25 seconds for each. Every prompt has lots of right answers, but the ones everybody says barely score. First names or last names both count, and if an answer isn’t on our list you get another try.</p>
+ <div class="chips">${TN.map((t, k) => `<span class="chip" style="--c:var(--t${k})"><b>${PTS[k]}</b> ${t}</span>`).join("")}</div>
+ <p class="mut" style="margin:12px 0 0">Every point is 10 metres of depth, and the water gets darker as you sink. A perfect dive is 7,000 m.</p></div>
+ <div class="card"><div class="big">Daily dive</div><p class="mut">${new Date().toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" })}. One prompt from seven different dives, the same for everyone today.</p>
+ <div class="row" style="margin-top:0"><button id="dl">${dn ? `Today: ${fmt(D.s * 10)} m. Replay for practice` : "Play today’s dive"}</button>${dn ? `<span class="big">${D.l.map(x => x < 0 ? "⬛" : SQ[x]).join("")}</span>` : ""}</div></div>
+ <h2 style="margin:26px 0 12px">Pick a dive</h2>
+ ${QZ.map((z, k) => `<button class="ghost qb" data-k="${k}" style="animation-delay:${k * 45}ms"><span class="qt"><span class="big">${z[0]}</span><span class="mut">${z[1]}</span></span>${B[k] ? `<span class="bst"><span class="big">${fmt(B[k])} m</span><span class="mut">your best</span></span>` : ""}</button>`).join("")}
+ <small>A fan-made game, not affiliated with the UFC or Krillion. Rarity comes from a built-in answer bank rather than live player data, so answers outside the bank score 0.</small>`;
+            $("#dl").onclick = () => go("d"); app.querySelectorAll(".qb").forEach(b => b.onclick = () => go(+b.dataset.k))
+        }
+        function go(k) { cur = k; R = k === "d" ? dailySet() : shuf(QZ[k][2], Math.random).map(n => POOL[n]); i = 0; score = 0; log = []; ask() }
+        function ask() {
+            const q = R[i];
+            app.innerHTML = `${head()}<div class="bar"><i id="tb"></i></div><div class="card"><div class="mut"><span id="tl">25</span> seconds left</div><h2>${q.q}</h2>
+ <input id="in" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Type one answer" aria-label="Your answer"><div class="row"><button id="lk">Lock it in</button><button class="ghost" id="sk">Skip</button></div></div>`;
+            const inp = $("#in"), bar = $(".bar"); inp.focus(); $("#lk").onclick = () => lock(); $("#sk").onclick = () => lock("skip");
+            inp.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); if (!e.repeat) lock() } };
+            t0 = Date.now(); clearInterval(tm);
+            tm = setInterval(() => { const l = 25 - (Date.now() - t0) / 1000; $("#tb").style.width = Math.max(0, l * 4) + "%"; bar.classList.toggle("low", l < 6); $("#tl").textContent = Math.max(0, Math.ceil(l)); if (l <= 0) lock("time") }, 100)
+        }
+        function lock(mode) {
+            const q = R[i], inp = $("#in"), raw = inp.value.trim(), m = mode === "skip" ? null : match(q.l, raw, q.p);
+            if (!m && !mode) { toast(raw ? `“${raw}” isn’t on our list. Try another answer.` : "Type an answer first."); inp.classList.remove("shake"); void inp.offsetWidth; inp.classList.add("shake"); inp.focus(); inp.select(); return }
+            clearInterval(tm); const p = m ? PTS[m[1]] : 0; score += p; log.push(m ? m[1] : -1); depth(); reveal(q, raw, m, p, mode)
+        }
+        function reveal(q, raw, m, p, mode) {
+            const chips = [...q.l].sort((a, b) => b[1] - a[1]).map((e, j) => `<span class="chip${e === m ? " me" : ""}" style="--c:var(--t${e[1]});animation-delay:${Math.min(j, 20) * 30}ms"><b>${PTS[e[1]]}</b> ${e[0]}</span>`).join("");
+            app.innerHTML = `${head()}<div class="card" style="--c:${m ? `var(--t${m[1]})` : "var(--mut)"}"><div class="mut">${q.q}</div><div class="big pts">+${p}</div>
+ <p><b>${m ? `${m[0]}: ${TN[m[1]]}` : mode === "skip" ? "You skipped this one" : "Time ran out"}</b><br>${m ? MSG[m[1]] : "No points this time."}</p></div>
+ <p class="mut">Every answer we rate for this prompt</p><div class="chips">${chips}</div>
+ <div class="row"><button id="nx">${i < 6 ? "Next prompt" : "See my dive"}</button></div>`;
+            const pe = app.querySelector(".pts"); countUp(pe, 0, p, 650, "", "+"); countUp($("#dm"), (score - p) * 10, score * 10, 900, " m");
+            if (m && m[1] >= 3) burst(pe, `var(--t${m[1]})`, m[1] * 8);
+            $("#nx").onclick = () => { i++; i < 7 ? ask() : fin() }; setTimeout(() => { const b = $("#nx"); b && b.focus() }, 400)
+        }
+        function fin() {
+            const d = score * 10, dk = cur === "d", rk = [...RANK].reverse().find(r => d >= r[0])[1], nb = !dk && d > (B[cur] || 0);
+            if (nb) { B[cur] = d; try { localStorage.setItem("octillion-b", JSON.stringify(B)) } catch (e) { } }
+            if (dk && D.d !== today()) { D = { d: today(), s: score, l: log }; try { localStorage.setItem("octillion-d", JSON.stringify(D)) } catch (e) { } }
+            const sh = `Octillion ${dk ? "Daily " + today() : QZ[cur][0]} 🥊 ${fmt(d)} m deep, ${rk}\n${log.map(x => x < 0 ? "⬛" : SQ[x]).join("")}`;
+            app.innerHTML = `<h1 id="fd">0 m</h1><p class="big" style="margin-top:8px">${rk}</p>
+ <p class="mut">${dk ? "Come back tomorrow for a new daily dive." : nb ? "New personal best." : `Your best on this dive is ${fmt(B[cur] || 0)} m.`} A perfect dive is 7,000 m.</p>
+ <div class="card"><pre>${sh}</pre></div>
+ <div class="row"><button id="cp">Copy result</button>${dk ? "" : `<button class="ghost" id="ag">Dive again</button>`}<button class="ghost" id="hm">All dives</button></div>`;
+            countUp($("#fd"), 0, d, 1400, " m"); if (d >= 2200) burst($("#fd"), "var(--acc)", 32);
+            if (!dk) $("#ag").onclick = () => go(cur); $("#hm").onclick = home;
+            $("#cp").onclick = async () => { try { await navigator.clipboard.writeText(sh); $("#cp").textContent = "Copied" } catch (e) { $("#cp").textContent = "Select the text above to copy it" } }
+        }
+        const SK = new Set("Jon Jones|Tony Ferguson|Henry Cejudo|Chris Weidman|Nick Diaz|Gregor Gillespie|Stipe Miocic|Joe Lauzon|Frankie Edgar|Conor McGregor|Edson Barboza|Thiago Santos|Taila Santos|Pedro Munhoz|Antonio Carlos Junior|Marcos Rogerio de Lima|Carlos Diego Ferreira|Elizeu Zaleski dos Santos|Rodolfo Vieira|Bruno Silva|Warlley Alves|Sérgio Moraes|Cezar Ferreira|Rafael dos Anjos|Zubaira Tukhugov|Aleksei Oleinik|Rustam Khabilov|Molly McCann|Joanne Wood|Marc Diakiese|Davey Grant|Tai Tuivasa|Walt Harris|Chris Daukaus|Justin Willis|Shamil Abdurakhimov|Greg Hardy|Andrei Arlovski|Yair Rodriguez|Holly Holm|Stephen Thompson".split("|").map(norm));
+        function narrow(k, what, act, ex, exf) {
+            const b = POOL[k], A = new Set(act.split("|").map(norm)),
+            rk = L => [...L].sort((x, y) => x[1] - y[1]).map((e, j, s) => [e[0], Math.min(5, Math.floor(j * 6 / s.length)), e[2]]),
+            cu = [...b.l.filter(e => A.has(norm(e[0]))), ...(ex ? parse(ex) : [])],
+            fo = [...b.l.filter(e => !A.has(norm(e[0])) && !SK.has(norm(e[0]))), ...(exf ? parse(exf) : [])];
+            POOL.push({ q: `Name a former UFC ${what}`, p: b.p, l: rk(fo) }); b.q = `Name a current UFC ${what}`; b.l = rk(cu); return POOL.length - 1
+        }
+        const FO = [
+            narrow(3, "fighter from Brazil", "Charles Oliveira|Alex Pereira|Jailton Almeida|Michel Pereira|Paulo Costa|Jessica Andrade|Gilbert Burns|Renato Moicano|Deiveson Figueiredo|Mayra Bueno Silva|Amanda Ribas|Viviane Araujo|Ketlen Vieira|Johnny Walker", "Diego Lopes2|Carlos Prates2|Mauricio Ruffy3|Rodrigo Nascimento5"),
+            narrow(38, "fighter from the USA", "Justin Gaethje|Kamaru Usman|Colby Covington|Sean Strickland|Sean O’Malley|Michael Chandler|Derrick Lewis|Josh Emmett|Jim Miller|Kayla Harrison|Julianna Peña|Rose Namajunas|Bryce Mitchell|Cory Sandhagen|Brian Ortega|Tecia Torres", "Max Holloway1|Belal Muhammad1|Bo Nickal2|Kevin Holland2|Jared Cannonier2|Jamahal Hill2|Tatiana Suarez2|Sean Brady3|Mackenzie Dern3|Khalil Rountree Jr.3|Raul Rosas Jr.4=rosas|Ryan Spann4"),
+            narrow(15, "fighter from Russia or the former Soviet Union", "Islam Makhachev|Petr Yan|Alexander Volkov|Magomed Ankalaev|Merab Dvalishvili|Sergei Pavlovich|Shavkat Rakhmonov|Movsar Evloev|Umar Nurmagomedov|Valentina Shevchenko|Nikita Krylov|Giga Chikadze|Roman Dolidze|Sergey Spivak", "Rafael Fiziev3|Ikram Aliskerov4|Shara Magomedov3"),
+            narrow(16, "fighter from the UK or Ireland", "Tom Aspinall|Paddy Pimblett|Ian Garry|Leon Edwards|Arnold Allen|Lerone Murphy|Paul Craig|Nathaniel Wood", "Mick Parkin4|Christian Leroy Duncan4", "Ross Pearson3|Tom Breese4|Paul Daley4|Jack Marshman4|Che Mills5|Mike Grundy5"),
+            narrow(30, "heavyweight", "Tom Aspinall|Ciryl Gane|Alexander Volkov|Sergei Pavlovich|Curtis Blaydes|Derrick Lewis|Jailton Almeida|Jairzinho Rozenstruik|Marcin Tybura", "Waldo Cortes-Acosta4|Mick Parkin4|Rodrigo Nascimento5"),
+            narrow(5, "fighter with a serious wrestling background", "Kamaru Usman|Colby Covington|Islam Makhachev|Merab Dvalishvili|Aljamain Sterling", "Bo Nickal2|Tatiana Suarez3"),
+            narrow(29, "fighter famous for striking", "Alex Pereira|Israel Adesanya|Max Holloway|Sean O’Malley|Justin Gaethje|Jiri Prochazka|Valentina Shevchenko|Marlon Vera|Dan Hooker|Jan Blachowicz|Derrick Lewis", "Zhang Weili1|Dricus du Plessis2")];
+        QZ[1][2][1] = FO[0]; QZ[9][2][0] = FO[3];
+        QZ.push(["Current roster", "Fighters on the UFC roster in mid-2026.", [3, 38, 15, 16, 30, 5, 29]],
+            ["Gone but not forgotten", "Retired and former UFC fighters.", FO]);
+        const S = [
+            ["Name a fighter who lands 5.5 or more significant strikes per minute (SLpM) in their UFC career", "Max Holloway0|Justin Gaethje0|Sean O’Malley1|Joanna Jędrzejczyk1|Shane Burgos3|Leslie Smith4|Norma Dumont4|Kris Moutinho5|Julianna Miller5"],
+            ["Name a fighter who absorbs 5.5 or more significant strikes per minute (SApM) in their UFC career", "Justin Gaethje0|Calvin Kattar2|Dan Hooker2|Josh Emmett3|Irene Aldana4|Billy Quarantillo4"],
+            ["Name a fighter with a career significant strike differential of +1.50 or better (SLpM minus SApM)", "Sean O’Malley0|Max Holloway0|Ciryl Gane2|Cain Velasquez3|Jéssica Andrade3|Jack Della Maddalena3|Giga Chikadze4"],
+            ["Name a fighter who averages 3.5 or more takedowns landed per 15 minutes", "Khabib Nurmagomedov0|Merab Dvalishvili0|Colby Covington1|Jailton Almeida3|Curtis Blaydes3|Movsar Evloev4"],
+            ["Name a fighter who averages 1.5 or more submission attempts per 15 minutes", "Charles Oliveira0|Mackenzie Dern2|Brian Ortega2|Paul Craig3|Gerald Meerschaert4|Ryan Hall4|Rodolfo Vieira5"],
+            ["Name a fighter who averages 1.2 or more knockdowns landed per 15 minutes", "Francis Ngannou1|Chuck Liddell2|Sergei Pavlovich3|Johnny Walker4|Carlos Prates5"],
+            ["Name a fighter who lands 6.5 or more total strikes (including ground and clinch) per minute", "Max Holloway0|Colby Covington2|Merab Dvalishvili2|Cain Velasquez3|Angela Hill4|Yan Xiaonan4"],
+            ["Name a fighter with an average UFC fight time of 14 minutes or longer (minimum 5 fights)", "Belal Muhammad1|Sean Strickland2|Raquel Pennington3|Movsar Evloev4|Katlyn Cerminara4=chookagian"],
+            ["Name a fighter with 55% or higher career significant strike accuracy", "Jon Jones0|Anderson Silva1|Ciryl Gane2|Kamaru Usman3|Khabib Nurmagomedov3|Alistair Overeem4"],
+            ["Name a fighter with 62% or higher career significant strike defense", "Jon Jones0|José Aldo1|Georges St-Pierre1|Petr Yan3|Dominick Cruz3|Arnold Allen4"],
+            ["Name a fighter with 55% or higher career takedown accuracy", "Georges St-Pierre1|Islam Makhachev1|Bo Nickal3|Taila Santos4|Nordine Taleb5"],
+            ["Name a fighter with 80% or higher career takedown defense", "Jon Jones0|José Aldo1|Kamaru Usman1|Tyron Woodley2|Robert Whittaker3|Chuck Liddell4"],
+            ["Name a fighter who has spent 50% or more of their total UFC cage time in top or control position", "Khabib Nurmagomedov0|Islam Makhachev1|Ben Askren2|Curtis Blaydes3|Gregor Gillespie3|Bartosz Fabinski5|Pat Sabatini5"],
+            ["Name a fighter whose career UFC wins have come by KO/TKO at least 75% of the time (minimum 5 wins)", "Derrick Lewis0|Francis Ngannou0|Junior dos Santos2|Sergei Pavlovich3|Jairzinho Rozenstruik4"],
+            ["Name a fighter whose career UFC wins have come by submission at least 70% of the time (minimum 5 wins)", "Demian Maia1|Royce Gracie1|Paul Craig3|Mackenzie Dern3|Aleksei Oleinik4"],
+            ["Name a fighter with 1,200 or more career UFC significant strikes landed", "Max Holloway0|Rafael dos Anjos2|Clay Guida3|Jeremy Stephens3|Angela Hill4|King Green4"],
+            ["Name a fighter with 1,200 or more career UFC significant strikes absorbed", "Max Holloway0|Jim Miller1|Donald Cerrone1|Neil Magny2|Angela Hill3"],
+            ["Name a fighter with 45 or more career UFC takedowns landed", "Georges St-Pierre0|Demian Maia0|Merab Dvalishvili1|Frankie Edgar2|Gleison Tibau3|Carla Esparza3|Nik Lentz4|Jacob Volkmann4|Tim Elliott4"],
+            ["Name a fighter with 60 or more minutes of career UFC control time", "Demian Maia0|Georges St-Pierre0|Khabib Nurmagomedov1|Marcin Tybura3|Sara McMann3|Darren Elkins4|Gillian Robertson4|Yushin Okami5"],
+            ["Name a fighter with 8 or more career UFC KO/TKO wins", "Derrick Lewis0|Anderson Silva0|Chuck Liddell0|Matt Mitrione3|Li Jingliang3|Melvin Guillard4|Michal Oleksiejczuk4|Uroš Medić5"],
+            ["Name a fighter with 6 or more career UFC submission wins", "Charles Oliveira0|Demian Maia0|Frank Mir1|Nate Diaz2|Royce Gracie3|Rani Yahya3|Cole Miller4|Gerald Meerschaert4"],
+            ["Name a fighter with 10 or more career UFC knockdowns landed", "Derrick Lewis0|Jeremy Stephens3|Lyoto Machida3|Michael Johnson4|Montel Jackson4|Carlos Prates5"],
+            ["Name a fighter with 12 or more total career UFC finishes (KO and submission combined)", "Charles Oliveira0|Donald Cerrone1|Jim Miller2|Neil Magny2|Anthony Pettis3|Vicente Luque3|Glover Teixeira3"],
+            ["Name a fighter with 5 or more hours (300+ minutes) of total UFC Octagon time", "Jim Miller0|Neil Magny1|Clay Guida2|Jeremy Stephens2|Diego Sanchez3|Andrei Arlovski3|Jessica Eye4"],
+            ["Name a fighter with 15 or more total UFC victories", "Jim Miller0|Max Holloway0|Charles Oliveira0|Georges St-Pierre0|Donald Cerrone0|Neil Magny0|Anderson Silva1|Andrei Arlovski2|Clay Guida2|Demian Maia2|Beneil Dariush3|Francisco Trinaldo3"],
+            ["Name a UFC heavyweight with 4 or more career submission wins", "Frank Mir1|Fabricio Werdum2|Aleksei Oleinik3|Stefan Struve4|Valter Walker5"],
+            ["Name a UFC women’s fighter with 1,000 or more career significant strikes landed", "Valentina Shevchenko0|Zhang Weili0|Joanna Jędrzejczyk1|Amanda Nunes1|Jéssica Andrade2|Raquel Pennington3|Angela Hill3"],
+            ["Name a fighter with 10 or more UFC post-fight bonuses (FOTN, POTN, KOTN, SOTN)", "Charles Oliveira0|Dustin Poirier0|Max Holloway1|Justin Gaethje1|Edson Barboza3|Tony Ferguson3|Nate Diaz3|Joe Lauzon4"],
+            ["Name a fighter with 25 or more career UFC appearances", "Jim Miller0|Neil Magny0|Donald Cerrone0|Rafael dos Anjos1|Clay Guida2|Andrei Arlovski2|Jeremy Stephens3"],
+            ["Name a fighter who has won 10 or more UFC fights by decision", "Jim Miller0|Georges St-Pierre0|Neil Magny1|Rafael dos Anjos2|Belal Muhammad3|Brad Tavares4"]
+        ];
+        const INP = { 0: 29, 3: 44, 5: 45, 13: 43, 25: 30 },
+            ST = S.map(([q, s], j) => { const l = parse(s); if (j in INP) { Object.assign(POOL[INP[j]], { q, l, p: 1 }); return INP[j] } POOL.push({ q, l, p: 1 }); return POOL.length - 1 });
+        Object.assign(POOL[5], { q: "Name a UFC fighter who wrestled in college", p: 1, l: parse("Brock Lesnar0|Daniel Cormier0|Kamaru Usman0|Randy Couture1|Mark Coleman1|Cain Velasquez1|Ben Askren1|Johny Hendricks1|Bo Nickal2|Matt Hughes2|Chael Sonnen2|Josh Koscheck2|Phil Davis2|Ryan Bader2|Colby Covington2|Rashad Evans2|Chris Weidman3|Frankie Edgar3|Gregor Gillespie3|Aljamain Sterling3|Gray Maynard3|Tito Ortiz3|Dan Henderson3|Jon Jones4|Kevin Randleman4|Dan Severn4|Mark Kerr4|Jon Fitch4|Mark Muñoz4|Clay Guida4|Tatiana Suarez4") });
+        Object.assign(POOL[38], { q: "Name a current UFC lightweight from the USA", l: parse("Justin Gaethje0|Michael Chandler1|Jalin Turner2|Bobby Green2|Grant Dawson3|Drew Dober3|Terrance McKinney3|Jim Miller3|Chase Hooper4|Jared Gordon4") });
+        Object.assign(POOL[40], { q: "Name a current UFC welterweight from the USA", l: parse("Kamaru Usman0|Colby Covington0|Belal Muhammad1|Sean Brady2|Geoff Neal2|Joaquin Buckley2|Bryan Battle3|Neil Magny3|Daniel Rodriguez3|Max Griffin4") });
+        QZ[15] = ["Roster check", "Where they’re from and where they wrestled.", [3, 38, 40, 15, 16, 5, 18]];
+        QZ[16] = ["Former fighters", "Retired and ex-UFC fighters by country.", [39, 41, 42, 19, 17, 18, 28]];
+        const T = n => ST[n - 1];
+        QZ.push(["Strike volume", "Strikes landed, absorbed and defended.", [1, 2, 3, 7, 9, 10, 16].map(T)],
+            ["Grappling numbers", "Takedowns, control and submissions.", [4, 5, 11, 12, 13, 18, 19].map(T)],
+            ["Finishers’ ledger", "KOs, submissions and knockdowns.", [6, 14, 15, 20, 21, 22, 23].map(T)],
+            ["Cage time", "Fight time, appearances and bonuses.", [8, 17, 24, 25, 29, 30, 28].map(T)],
+            ["Career milestones", "Heavyweights, women and big totals.", [26, 27, 2, 11, 20, 21, 23].map(T)]);
+        const L = {
+            1: "Carli Judice, Joshua Van, Josh Hokit, Terrance McKinney, Tom Aspinall, Casey O'Neill, Leslie Smith, Esteban Ribovics, Emily Ducote, Shane Burgos, Zhang Mingyang, Carlos Ulberg, Michal Oleksiejczuk, Paulo Costa, Sean Strickland, Max Holloway, Justin Gaethje, Petr Yan, Yan Xiaonan, Jéssica Andrade, Joanna Jędrzejczyk, Cris Cyborg, Ilia Topuria, Jack Della Maddalena, Sean O'Malley, Giga Chikadze, Kris Moutinho, Julianna Miller, Norma Dumont, Jiří Procházka, Dan Hooker, Calvin Kattar, Jared Gordon, Drew Dober, Dustin Poirier, Yair Rodriguez, Cory Sandhagen, Rob Font, Marlon Vera",
+            2: "Kris Moutinho, Calvin Kattar, Dan Hooker, Irene Aldana, Billy Quarantillo, Josh Emmett, Shane Burgos, Justin Gaethje, Max Holloway, Nate Diaz, Diego Sanchez, Clay Guida, Jeremy Stephens, Tony Ferguson, Donald Cerrone, Rob Font, Marlon Vera, Petr Yan, Cory Sandhagen, Angela Hill, Jéssica Andrade, Raquel Pennington, Lauren Murphy, Jessica Eye, Leslie Smith, Julianna Miller, Eryk Anders, Marvin Vettori, Paulo Costa, Darren Till, Jared Cannonier, Tai Tuivasa, Derrick Lewis, Stefan Struve, Andrei Arlovski",
+            3: "Cris Cyborg, Cain Velasquez, Tom Aspinall, Ilia Topuria, Justin Gaethje, Sean O'Malley, Jack Della Maddalena, Ciryl Gane, Max Holloway, Umar Nurmagomedov, Giga Chikadze, Jéssica Andrade, Joanna Jędrzejczyk, Amanda Nunes, Valentina Shevchenko, Zhang Weili, Tatiana Suarez, Khabib Nurmagomedov, Islam Makhachev, Kamaru Usman, Leon Edwards, Israel Adesanya, Robert Whittaker, Alex Pereira, Jiří Procházka, Jon Jones, Daniel Cormier, Stipe Miocic, Francis Ngannou, Alexander Volkanovski, Petr Yan, Merab Dvalishvili, Cory Sandhagen, Deiveson Figueiredo, Alexandre Pantoja",
+            4: "Khabib Nurmagomedov, Merab Dvalishvili, Curtis Blaydes, Jailton Almeida, Colby Covington, Tatiana Suarez, Khamzat Chimaev, Sean Sherk, Movsar Evloev, Cain Velasquez, Georges St-Pierre, Chael Sonnen, Jon Fitch, Josh Koscheck, Clay Guida, Frankie Edgar, Chad Mendes, Henry Cejudo, Aljamain Sterling, Umar Nurmagomedov, Islam Makhachev, Arman Tsarukyan, Beneil Dariush, Gregor Gillespie, Pat Sabatini, Bryce Mitchell, Brian Ortega, Alexander Volkanovski, Belal Muhammad, Kamaru Usman, Phil Davis, Ryan Bader, Daniel Cormier, Corey Anderson, Carla Esparza, Gillian Robertson, Macy Chiasson, Sara McMann",
+            5: "Brian Ortega, Paul Craig, Rodolfo Vieira, Ryan Hall, Gerald Meerschaert, Charles Oliveira, Demian Maia, Ronda Rousey, Mackenzie Dern, Gillian Robertson, Tatiana Suarez, Khamzat Chimaev, Jailton Almeida, André Muniz, Brendan Allen, Anthony Hernandez, Jack Hermansson, Gunnar Nelson, Michael Chiesa, Nate Diaz, Nick Diaz, Joe Lauzon, Jim Miller, Tony Ferguson, Beneil Dariush, Islam Makhachev, Khabib Nurmagomedov, Arman Tsarukyan, Bryce Mitchell, Kron Gracie, Rani Yahya, Aljamain Sterling, Deiveson Figueiredo, Alexandre Pantoja, Brandon Moreno, Alex Perez, Amir Albazi, Frank Mir, Fabrício Werdum, Aleksei Oleinik, Valter Walker",
+            6: "Johnny Walker, Francis Ngannou, Chuck Liddell, Carlos Prates, Sergei Pavlovich, Ilia Topuria, Conor McGregor, Alex Pereira, Derrick Lewis, Tom Aspinall, Ciryl Gane, Junior Dos Santos, Stipe Miocic, Shane Carwin, Jairzinho Rozenstruik, Tai Tuivasa, Josh Emmett, Jeremy Stephens, Justin Gaethje, Dustin Poirier, Edson Barboza, Michael Chandler, Drew Dober, Dan Hooker, Vicente Luque, Geoff Neal, Kamaru Usman, Leon Edwards, Jorge Masvidal, Robbie Lawler, Thiago Santos, Anthony Johnson, Anderson Silva, Israel Adesanya, Yoel Romero, Robert Whittaker, Paulo Costa, Khalil Rountree Jr., Jiří Procházka, Jamahal Hill, Jan Błażowicz, Deiveson Figueiredo, Cody Garbrandt, Sean O'Malley, Petr Yan, Marlon Vera, Montel Jackson",
+            7: "Colby Covington, Merab Dvalishvili, Cain Velasquez, Yan Xiaonan, Angela Hill, Carli Judice, Joshua Van, Josh Hokit, Terrance McKinney, Tom Aspinall, Casey O'Neill, Leslie Smith, Esteban Ribovics, Emily Ducote, Shane Burgos, Max Holloway, Sean Strickland, Joanna Jędrzejczyk, Jéssica Andrade, Zhang Weili, Tatiana Suarez, Khabib Nurmagomedov, Islam Makhachev, Kamaru Usman, Belal Muhammad, Sean Brady, Gilbert Burns, Rafael Dos Anjos, Frankie Edgar, Clay Guida, Gregor Gillespie, Curtis Blaydes, Jailton Almeida, Chael Sonnen, Jon Fitch, Georges St-Pierre",
+            8: "Raquel Pennington, Katlyn Cerminara, Belal Muhammad, Sean Strickland, Movsar Evloev, Leon Edwards, Kamaru Usman, Colby Covington, Georges St-Pierre, Rafael Dos Anjos, Frankie Edgar, Dominick Cruz, Aljamain Sterling, Merab Dvalishvili, Petr Yan, Cory Sandhagen, Alexander Volkanovski, Max Holloway, Robert Whittaker, Israel Adesanya, Marvin Vettori, Jared Cannonier, Sean O'Malley, Valentina Shevchenko, Joanna Jędrzejczyk, Zhang Weili, Rose Namajunas, Carla Esparza, Jessica Eye, Lauren Murphy, Angela Hill, Tecia Pennington, Michelle Waterson-Gomez, Magomed Ankalaev, Jan Błażowicz, Dominick Reyes, Ciryl Gane, Alexander Volkov",
+            9: "Alistair Overeem, Ciryl Gane, Shara Magomedov, Anderson Silva, Askar Askarov, Waldo Cortes-Acosta, Fabio Maldonado, Tatiana Suarez, Gunnar Nelson, Randy Couture, Khabib Nurmagomedov, Islam Makhachev, Kamaru Usman, Cain Velasquez, Daniel Cormier, Jon Jones, Stipe Miocic, Tom Aspinall, Alex Pereira, Israel Adesanya, Jack Hermansson, Khamzat Chimaev, Jailton Almeida, Curtis Blaydes, Glover Teixeira, Valentina Shevchenko, Amanda Nunes, Cris Cyborg, Jéssica Andrade, Zhang Weili, Merab Dvalishvili, Umar Nurmagomedov, Henry Cejudo, Demetrious Johnson, Alexandre Pantoja, Deiveson Figueiredo",
+            10: "Georges St-Pierre, Phil Davis, Ryan Bader, Dominick Cruz, Jose Aldo, Francis Ngannou, Stephen Thompson, Lyoto Machida, Holly Holm, Anderson Silva, Petr Yan, Arnold Allen, Valentina Shevchenko, Joanna Jędrzejczyk, Rose Namajunas, Amanda Nunes, Israel Adesanya, Robert Whittaker, Leon Edwards, Kamaru Usman, Tyron Woodley, Khabib Nurmagomedov, Islam Makhachev, Alexander Volkanovski, Max Holloway, Cory Sandhagen, Aljamain Sterling, Umar Nurmagomedov, Ilia Topuria, Ciryl Gane, Stipe Miocic, Jon Jones, Alexander Gustafsson, Jan Błażowicz, Magomed Ankalaev",
+            11: "Nordine Taleb, Taila Santos, Robbie Lawler, Georges St-Pierre, Kamaru Usman, Nik Lentz, Islam Makhachev, Chad Mendes, Cain Velasquez, Bo Nickal, Khabib Nurmagomedov, Khamzat Chimaev, Jailton Almeida, Tatiana Suarez, Curtis Blaydes, Daniel Cormier, Henry Cejudo, Jon Jones, Randy Couture, Brock Lesnar, Josh Koscheck, Johny Hendricks, Tyron Woodley, Colby Covington, Belal Muhammad, Sean Brady, Gilbert Burns, Arman Tsarukyan, Beneil Dariush, Gregor Gillespie, Pat Sabatini, Bryce Mitchell, Brian Ortega, Alexander Volkanovski, Ilia Topuria, Umar Nurmagomedov, Petr Yan, Demetrious Johnson, Deiveson Figueiredo, Alexandre Pantoja",
+            12: "Kamaru Usman, Jon Jones, Renan Barão, Gleison Tibau, Tyron Woodley, Jose Aldo, Chuck Liddell, Andrei Arlovski, Robert Whittaker, Petr Yan, Alexander Volkanovski, Max Holloway, Ilia Topuria, Justin Gaethje, Eddie Alvarez, Rafael Fiziev, Leon Edwards, Gilbert Burns, Colby Covington, Geoff Neal, Vicente Luque, Israel Adesanya, Paulo Costa, Marvin Vettori, Jared Cannonier, Alex Pereira, Jiří Procházka, Jamahal Hill, Jan Błażowicz, Magomed Ankalaev, Francis Ngannou, Stipe Miocic, Junior Dos Santos, Ciryl Gane, Derrick Lewis, Amanda Nunes, Valentina Shevchenko, Joanna Jędrzejczyk, Holly Holm, Zhang Weili",
+            13: "Bartosz Fabinski, Gregor Gillespie, Pat Sabatini, Khabib Nurmagomedov, Curtis Blaydes, Jon Fitch, Sean Sherk, Chael Sonnen, Cain Velasquez, Jailton Almeida, Tatiana Suarez, Khamzat Chimaev, Islam Makhachev, Georges St-Pierre, Kamaru Usman, Colby Covington, Belal Muhammad, Sean Brady, Merab Dvalishvili, Aljamain Sterling, Umar Nurmagomedov, Henry Cejudo, Demetrious Johnson, Daniel Cormier, Randy Couture, Brock Lesnar, Mark Coleman, Tito Ortiz, Phil Davis, Ryan Bader, Corey Anderson, Rashad Evans, Chris Weidman, Luke Rockhold, Derek Brunson, Marvin Vettori, Anthony Hernandez, Brendan Allen, Gillian Robertson, Carla Esparza, Sara McMann, Ronda Rousey",
+            14: "Derrick Lewis, Francis Ngannou, Sergei Pavlovich, Jairzinho Rozenstruik, Junior Dos Santos, Shane Carwin, Cain Velasquez, Stipe Miocic, Tom Aspinall, Tai Tuivasa, Curtis Blaydes, Mark Hunt, Alistair Overeem, Anthony Johnson, Chuck Liddell, Thiago Santos, Johnny Walker, Khalil Rountree Jr., Jamahal Hill, Jiří Procházka, Alex Pereira, Carlos Ulberg, Vitor Belfort, Anderson Silva, Yoel Romero, Paulo Costa, Uriah Hall, Joaquin Buckley, Robbie Lawler, Matt Brown, Vicente Luque, Geoff Neal, Carlos Prates, Conor McGregor, Justin Gaethje, Drew Dober, Dustin Poirier, Dan Hooker, Edson Barboza, Jeremy Stephens, Josh Emmett, Ilia Topuria, Cody Garbrandt, Sean O'Malley, Marlon Vera, Amanda Nunes, Cris Cyborg, Jéssica Andrade",
+            15: "Demian Maia, Paul Craig, Royce Gracie, Aleksei Oleinik, Mackenzie Dern, Charles Oliveira, Ronda Rousey, Rodolfo Vieira, Ryan Hall, Kron Gracie, André Muniz, Rousimar Palhares, Gunnar Nelson, Michael Chiesa, Nate Diaz, Joe Lauzon, Cole Miller, Jim Miller, Kenny Florian, Brian Ortega, Bryce Mitchell, Rani Yahya, Aljamain Sterling, Gillian Robertson, Tatiana Suarez, Deiveson Figueiredo, Alexandre Pantoja, Frank Mir, Fabrício Werdum, Valter Walker, Antônio Rodrigo Nogueira, Gabriel Gonzaga",
+            26: "Frank Mir, Aleksei Oleinik, Fabrício Werdum, Valter Walker, Stefan Struve, Gabriel Gonzaga, Antônio Rodrigo Nogueira, Josh Barnett, Royce Gracie, Oleg Taktarov, Dan Severn, Mark Coleman, Ken Shamrock, Jailton Almeida, Curtis Blaydes, Marcin Tybura, Andrei Arlovski, Alistair Overeem, Ben Rothwell, Brendan Schaub",
+            27: "Angela Hill, Joanna Jędrzejczyk, Jéssica Andrade, Amanda Nunes, Raquel Pennington, Valentina Shevchenko, Zhang Weili, Rose Namajunas, Holly Holm, Tecia Pennington, Jessica Eye, Lauren Murphy, Katlyn Cerminara, Michelle Waterson-Gomez, Carla Esparza, Marina Rodriguez, Yan Xiaonan, Mackenzie Dern, Gillian Robertson, Julianna Peña, Germaine de Randamie, Cris Cyborg, Claudia Gadelha, Karolina Kowalkiewicz, Cynthia Calvillo, Joanne Wood, Molly McCann, Casey O'Neill, Alexa Grasso, Irene Aldana, Ketlen Vieira, Macy Chiasson, Norma Dumont",
+            28: "Charles Oliveira, Donald Cerrone, Nate Diaz, Joe Lauzon, Jim Miller, Justin Gaethje, Dustin Poirier, Max Holloway, Edson Barboza, Tony Ferguson, Cub Swanson, Frankie Edgar, Anderson Silva, Conor McGregor, Jon Jones, Demetrious Johnson, Stipe Miocic, Derrick Lewis, Glover Teixeira, Jiri Prochazka, Israel Adesanya, Robert Whittaker, Yoel Romero, Kelvin Gastelum, Vicente Luque, Matt Brown, Jorge Masvidal, Robbie Lawler, Carlos Condit, Diego Sanchez, Clay Guida, Jeremy Stephens, Brian Ortega, Yair Rodriguez, Chan Sung Jung, Jose Aldo, TJ Dillashaw, Marlon Vera, Sean O'Malley, Petr Yan, Deiveson Figueiredo, Brandon Moreno, Jéssica Andrade, Amanda Nunes, Rose Namajunas, Zhang Weili"
+        };
+        const ALI = { "Katlyn Cerminara": "chookagian", "Tecia Pennington": "torres", "Michelle Waterson-Gomez": "waterson,gomez", "Waldo Cortes-Acosta": "cortes,acosta", "Antônio Rodrigo Nogueira": "minotauro,nogueira" },
+            cnt = {};
+        Object.values(L).forEach(s => new Set(s.split(", ").map(norm)).forEach(k => cnt[k] = (cnt[k] || 0) + 1));
+        const cs = Object.values(cnt), pt = c => { const p = (cs.filter(x => x > c).length + cs.filter(x => x === c).length / 2) / cs.length; return p < .08 ? 0 : p < .2 ? 1 : p < .4 ? 2 : p < .6 ? 3 : p < .76 ? 4 : 5 };
+        for (const n in L) POOL[ST[n - 1]].l = [...new Map(L[n].split(", ").map(x => [norm(x), x])).values()].map(x => [x, pt(cnt[norm(x)]), ALI[x] || ""]);
+        function more() { const last = R.slice(-5); R.push(...shuf(POOL.map((_, k) => k), Math.random).map(k => POOL[k]).filter(q => !last.includes(q))) }
+        const _g = go; go = function (k) { if (k !== "e") return _g(k); cur = "e"; QZ.e = ["Endless dive", "", []]; R = []; more(); i = 0; score = 0; log = []; ask() };
+        const _hd = head; head = () => cur === "e" ? `<div class="top"><span class="mut">Endless dive, prompt ${i + 1}</span><span class="big" id="dm">${fmt(score * 10)} m</span></div>` : _hd();
+        const _rv = reveal; reveal = function (...a) { _rv(...a); if (cur !== "e") return; const nx = $("#nx"); nx.textContent = "Next prompt"; nx.onclick = () => { i++; if (i >= R.length - 1) more(); ask() }; const s = document.createElement("button"); s.className = "ghost"; s.textContent = "Surface"; s.onclick = fin; nx.after(s) };
+        const _fn = fin; fin = function () { if (cur !== "e") return _fn(); const n = log.length; log = log.slice(-14); _fn(); app.querySelector("p.mut").textContent = `You answered ${n} prompts. ${B.e === score * 10 ? "New deepest dive." : `Your deepest is ${fmt(B.e || 0)} m.`}` };
+        const _h = home; home = function () { _h(); const c = document.createElement("div"); c.className = "card"; c.innerHTML = `<div class="big">Endless dive</div><p class="mut">Random prompts from every dive, with no limit. Keep sinking until you choose to surface.${B.e ? ` Your deepest is ${fmt(B.e)} m.` : ""}</p><button id="en">Dive forever</button>`; app.querySelector("h2").before(c); $("#en").onclick = () => go("e") };
+        const DF = [[10, "the water pressure is double what it is at the surface."], [40, "recreational scuba divers hit their depth limit."], [100, "elite freedivers are still going on a single breath."], [200, "sunlight has all but faded out, and the sunlit zone of the ocean ends."], [330, "you’re as deep as the Eiffel Tower is tall, just shy of the 332 m scuba diving record."], [500, "emperor penguins dive to hunt. Their record is about 560 m."], [830, "you’re deeper than the Burj Khalifa is tall."], [1000, "no sunlight reaches you. This is the midnight zone."], [1200, "leatherback sea turtles have been recorded diving."], [2000, "elephant seals dive past here, with a record of about 2,390 m."], [2500, "the research sub Alvin found the first hydrothermal vents in 1977."], [3000, "Cuvier’s beaked whales, the deepest-diving mammals, reach about 3,000 m."], [3500, "the Titan submersible imploded in 2023 on its way to the Titanic."], [3800, "the wreck of the Titanic rests on the seafloor."], [4000, "you’ve passed the bottom of the deepest mine on Earth, Mponeng in South Africa."], [4800, "the wreck of the Bismarck lies on the seabed."], [5000, "the pressure is about 500 times what it is at the surface."], [6000, "you’ve entered the hadal zone, the deep ocean trenches."], [6500, "you’ve reached the depth limit of the research sub Alvin."], [7000, "hadal snailfish live, among the deepest fish in the ocean."], [8849, "you’re deeper than Mount Everest is tall."], [10900, "you’ve reached Challenger Deep, the deepest known point in the ocean."], [12262, "you’ve passed the Kola Superdeep Borehole, the deepest hole ever drilled."]];
+        const _a = ask; ask = function () { document.body.classList.add("playing"); _a() };
+        const _h2 = home; home = function () { document.body.classList.remove("playing"); _h2() };
+        const _f3 = fin; fin = function () { document.body.classList.remove("playing"); _f3() };
+        const _r3 = reveal; reveal = function (...a) {
+            _r3(...a); const p = a[3]; if (!(p > 0)) return; const n = score * 10, o = n - p * 10, c = DF.filter(f => f[0] > o && f[0] <= n).pop(), u = DF.find(f => f[0] > n),
+                x = c ? `At ${fmt(c[0])} m, ${c[1]}` : u ? `Next up, ${fmt(u[0] - n)} m deeper. At ${fmt(u[0])} m, ${u[1]}` : "";
+            if (x) { const e = document.createElement("p"); e.className = "ins"; e.innerHTML = `<b>Depth insight</b>${x}`; app.querySelector(".card").after(e) }
+        };
+        let bk = 0; $("#back").onclick = () => { if (Date.now() - bk < 3000) { clearInterval(tm); home() } else { bk = Date.now(); toast("Tap back again to leave. This dive won’t be saved.") } };
+        home();
+    </script>
+</body>
+
+</html>
